@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
-import _thread
+import _thread, smtplib, ssl, qrcode, email
 from bitcoinaddress import Wallet
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 # Coded for fun, use responsibly at your own risks
 # Do not use where you do not have permission to run
@@ -18,6 +22,60 @@ f = open("wallet.txt","w+")
 # Allow multi-threading
 # Todo: check limitations of bitcoinaddress library
 threads = 1
+
+def sendEmail(wallet):
+    subject = "Congrats! Haz Coinz!"
+    body = "Your bitcoins are ready to be collected.\n\nBe quick... you\'ve just emailed the keyz!\n\n"  + str(wallet)
+
+    port = 465  # For SSL
+    smtp_server = "smtp.gmail.com"
+    sender_email = "@gmail.com"  # Enter your address
+    receiver_email = "@gmail.com"  # Enter receiver address
+    password = ''  # Caution, plain text password
+
+    # Create a multipart message and set headers
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = subject
+    message["Bcc"] = receiver_email  # Recommended for mass emails
+
+
+    # Add body to email
+    message.attach(MIMEText(body, "plain"))
+
+    img = qrcode.make(wallet.key.hex)
+    img.save(wallet.key.hex + ".png" )
+
+    filename = wallet.key.hex + ".png"  # In same directory as script
+
+
+    # Open PNG file in binary mode
+    with open(filename, "rb") as attachment:
+        # Add file as application/octet-stream
+        # Email client can usually download this automatically as attachment
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(attachment.read())
+
+    # Encode file in ASCII characters to send by email    
+    encoders.encode_base64(part)
+
+    # Add header as key/value pair to attachment part
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename= {filename}",
+    )
+
+    # Add attachment to message and convert message to string
+    message.attach(part)
+    text = message.as_string()
+
+    # Log in to server using secure context and send email
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, text)
+
 
 def generateWallets(thread, e, f):
 
@@ -48,6 +106,7 @@ def generateWallets(thread, e, f):
                 print('Its a complete match')
                 print(wallet)
                 f.write(wallet,"/n")
+                sendEmail(wallet)
             else:
                 print(thread+"1")
         if wallet.address.mainnet.pubaddr1c[1:5] in addr1_short:
@@ -55,6 +114,7 @@ def generateWallets(thread, e, f):
                 print('Its a complete match')
                 print(wallet)
                 f.write(wallet,"/n")
+                sendEmail(wallet)
             else:
                 print(thread+"1c")
         if wallet.address.mainnet.pubaddr3[1:5] in addr3_short:
@@ -62,6 +122,7 @@ def generateWallets(thread, e, f):
                 print('Its a complete match')
                 print(wallet)
                 f.write(wallet,"/n")
+                sendEmail(wallet)
             else:
                 print(thread+"3")
         if wallet.address.mainnet.pubaddrbc1_P2WPKH[4:8] in addrbc1_P2WPKH_short:
@@ -69,6 +130,7 @@ def generateWallets(thread, e, f):
                 print('Its a complete match')
                 print(wallet)
                 f.write(wallet,"/n")
+                sendEmail(wallet)
             else:
                 print(thread+"PKH")
         if wallet.address.mainnet.pubaddrbc1_P2WSH[4:8] in addrbc1_P2WSH_short:
@@ -76,6 +138,7 @@ def generateWallets(thread, e, f):
                 print('Its a complete match')
                 print(wallet)
                 f.write(wallet,"/n")
+                sendEmail(wallet)
             else:
                 print(thread+"WSH")
         print('.', end = "")
