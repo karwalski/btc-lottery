@@ -105,7 +105,7 @@ def generateWallets(thread, e, f):
             if wallet.address.mainnet.pubaddr1 in addr1_full:
                 print('Its a complete match')
                 print(wallet)
-                f.write(wallet,"/n")
+                f.write(str(wallet))
                 sendEmail(wallet)
             else:
                 print(thread+"1")
@@ -113,7 +113,7 @@ def generateWallets(thread, e, f):
             if wallet.address.mainnet.pubaddr1c in addr1_full:
                 print('Its a complete match')
                 print(wallet)
-                f.write(wallet,"/n")
+                f.write(str(wallet))
                 sendEmail(wallet)
             else:
                 print(thread+"1c")
@@ -121,7 +121,7 @@ def generateWallets(thread, e, f):
             if wallet.address.mainnet.pubaddr3 in addr3_full:
                 print('Its a complete match')
                 print(wallet)
-                f.write(wallet,"/n")
+                f.write(str(wallet))
                 sendEmail(wallet)
             else:
                 print(thread+"3")
@@ -129,7 +129,7 @@ def generateWallets(thread, e, f):
             if wallet.address.mainnet.pubaddrbc1_P2WPKH in addrbc1_P2WPKH_full:
                 print('Its a complete match')
                 print(wallet)
-                f.write(wallet,"/n")
+                f.write(str(wallet))
                 sendEmail(wallet)
             else:
                 print(thread+"PKH")
@@ -137,7 +137,7 @@ def generateWallets(thread, e, f):
             if wallet.address.mainnet.pubaddrbc1_P2WSH in addrbc1_P2WSH_full:
                 print('Its a complete match')
                 print(wallet)
-                f.write(wallet,"/n")
+                f.write(str(wallet))
                 sendEmail(wallet)
             else:
                 print(thread+"WSH")
