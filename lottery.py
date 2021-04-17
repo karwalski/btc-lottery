@@ -77,7 +77,7 @@ def sendEmail(wallet):
         server.sendmail(sender_email, receiver_email, text)
 
 
-def generateWallets(thread, e, f):
+def generateWallets(thread, e, ee):
 
     # Top 10k > 170+ BTC (US$10M)
     # 1 - cannot identify if compressed
