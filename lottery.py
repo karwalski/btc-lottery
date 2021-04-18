@@ -17,7 +17,7 @@ from email.mime.text import MIMEText
 # The Birthday Paradox + Luck + Fun
 
 # Write the results to a text file
-f = open("wallet.txt","w+")
+
 
 # Allow multi-threading
 # Todo: check limitations of bitcoinaddress library
@@ -25,13 +25,13 @@ threads = 1
 
 def sendEmail(wallet):
     subject = "Congrats! Haz Coinz!"
-    body = "Your bitcoins are ready to be collected.\n\nBe quick... you\'ve just emailed the keyz!\n\n"  + str(wallet)
+    body = "It appears that it actually worked.\n\nBe quick... you\'ve just emailed the keyz!\n\n"  + str(wallet)
 
     port = 465  # For SSL
     smtp_server = "smtp.gmail.com"
     sender_email = "@gmail.com"  # Enter your address
     receiver_email = "@gmail.com"  # Enter receiver address
-    password = ''  # Caution, plain text password
+    password = ''
 
     # Create a multipart message and set headers
     message = MIMEMultipart()
@@ -76,6 +76,14 @@ def sendEmail(wallet):
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, text)
 
+def writeFile(wallet):
+    nl = ''
+    for i in range(100):
+        nl = nl + '='
+    f = open("wallet.txt","a")
+    f.write(str(wallet))
+    f.write(nl)
+    f.close()
 
 def generateWallets(thread, e, ee):
 
@@ -106,7 +114,7 @@ def generateWallets(thread, e, ee):
             if wallet.address.mainnet.pubaddr1 in addr1_full:
                 print('Its a complete match')
                 print(wallet)
-                f.write(str(wallet))
+                writeFile(wallet)
                 sendEmail(wallet)
             else:
                 print(thread+"1")
@@ -114,7 +122,7 @@ def generateWallets(thread, e, ee):
             if wallet.address.mainnet.pubaddr1c in addr1_full:
                 print('Its a complete match')
                 print(wallet)
-                f.write(str(wallet))
+                writeFile(wallet)
                 sendEmail(wallet)
             else:
                 print(thread+"1c")
@@ -122,7 +130,7 @@ def generateWallets(thread, e, ee):
             if wallet.address.mainnet.pubaddr3 in addr3_full:
                 print('Its a complete match')
                 print(wallet)
-                f.write(str(wallet))
+                writeFile(wallet)
                 sendEmail(wallet)
             else:
                 print(thread+"3")
@@ -130,7 +138,7 @@ def generateWallets(thread, e, ee):
             if wallet.address.mainnet.pubaddrbc1_P2WPKH in addrbc1_P2WPKH_full:
                 print('Its a complete match')
                 print(wallet)
-                f.write(str(wallet))
+                writeFile(wallet)
                 sendEmail(wallet)
             else:
                 print(thread+"PKH")
@@ -138,7 +146,7 @@ def generateWallets(thread, e, ee):
             if wallet.address.mainnet.pubaddrbc1_P2WSH in addrbc1_P2WSH_full:
                 print('Its a complete match')
                 print(wallet)
-                f.write(str(wallet))
+                writeFile(wallet)
                 sendEmail(wallet)
             else:
                 print(thread+"WSH")
@@ -149,3 +157,10 @@ for i in range(threads):
 
 while True:
    pass
+
+
+
+
+
+###
+recover = ['urge', 'velvet', 'powder', 'purse', 'wide', 'legal', 'harbor', 'shine', 'energy', 'easy', 'latin', 'rebuild']
