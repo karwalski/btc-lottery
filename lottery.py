@@ -157,10 +157,3 @@ for i in range(threads):
 
 while True:
    pass
-
-
-
-
-
-###
-recover = ['urge', 'velvet', 'powder', 'purse', 'wide', 'legal', 'harbor', 'shine', 'energy', 'easy', 'latin', 'rebuild']
